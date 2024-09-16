@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "e99dce21-bd61-4f2a-b7d6-39bad61a9d14",
+		"name": "Artist System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20657431"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" :\"new@admin.com\",\n    \"password\" : \"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/api/auth/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"first_name\" : \"super\",\n    \"last_name\" : \"admin\",\n    \"email\" :\"new@admin.com\",\n    \"password\" : \"password\",\n    \"phone\" : \"9800000002\",\n    \"dob\" : \"2000-01-02\",\n    \"gender\" : \"m\",\n    \"address\" : \"Nepal\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/api/auth/register"
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuZXdAYWRtaW4uY29tIiwiaWF0IjoxNzI2MzA0NTg3LCJleHAiOjE3MjYzOTA5ODd9.2-1Zip0Gw1huweIZvL4Gfthxs-rClCzQru-OsrEhLmc"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\" : \"admin@admin.com\",\n    \"password\" :\"password\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{API_URL}}/api/auth/me"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuZXdAYWRtaW4uY29tIiwiaWF0IjoxNzI2MzAzNjM4LCJleHAiOjE3MjYzOTAwMzh9.4LfxXFZfrq1znBp_qOv19uFapJmRWZrdshpQLR0EJtk"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AUTH_TOKEN",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiZW1haWwiOiJuZXdAYWRtaW4uY29tIiwiaWF0IjoxNzI2MzAzNjM4LCJleHAiOjE3MjYzOTAwMzh9.4LfxXFZfrq1znBp_qOv19uFapJmRWZrdshpQLR0EJtk"
+		},
+		{
+			"key": "API_URL",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}
