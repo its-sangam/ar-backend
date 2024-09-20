@@ -9,7 +9,7 @@ export async function register(req, res) {
     const { first_name, last_name, email, password, phone, dob, gender, address } = req.body;
 
     try {
-        const result = await queryDatabase('SELECT email FROM user WHERE email = ? OR phone = ?', [email,phone]);
+        const result = await queryDatabase('SELECT email FROM user WHERE email = ? OR phone = ?', [email, phone]);
 
         if (result.length > 0) {
             return res.status(400).json({ email: 'Duplicate email or phone number' });
@@ -27,7 +27,7 @@ export async function register(req, res) {
 }
 
 export async function login(req, res) {
-    const { email, password,remember } = req.body;
+    const { email, password, remember } = req.body;
 
     try {
         const results = await queryDatabase('SELECT * FROM user WHERE email = ?', [email]);
@@ -63,5 +63,10 @@ export async function login(req, res) {
 }
 
 export async function me(req, res) {
-    res.status(200).json({ message: 'Access granted', user: req.user });
+    const {id} = req.user;
+    const results = await queryDatabase('SELECT * FROM user WHERE id = ?', [id]);
+
+    const user = results[0];
+    let resUser = {id:user?.id, first_name : user?.first_name, last_name: user?.last_name,email:user?.email, phone: user?.phone, dob : new Date(user?.dob), address: user?.address, gender: user?.gender, role: user?.role}
+    res.status(200).json({ message: 'Profile Details Listed Successfully!', user: resUser });
 }

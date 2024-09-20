@@ -4,6 +4,7 @@ export async function up() {
     try {
         await queryDatabase(`
             CREATE TABLE IF NOT EXISTS music (
+                id INT AUTO_INCREMENT PRIMARY KEY,
                 artist_id INT,
                 title VARCHAR(255) NOT NULL,
                 album_name VARCHAR(255) NOT NULL,
