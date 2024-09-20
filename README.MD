@@ -41,6 +41,7 @@ Before you begin, ensure you have the following installed:
 1. **Copy a `.env.example` as `.env`** in the root directory of the project:
 
 2. **Modify the variables accoridng to your local mysql setup**(Use the database name you created on mysql)
+3. **Create an `uploads` folder** in the root directory of the project to store the uploaded files.
 
 ## Running the Application
 1. **Run the migrations:**
@@ -69,7 +70,7 @@ Before you begin, ensure you have the following installed:
 
 3. The application will run on `http://localhost:5000` (or the port specified in your `.env` file).
 
-
+<!-- 
 ## Postman API Testing
 
 After setting up the server, you can import the `ar-collection.json` file into Postman to see and test the API endpoints.
@@ -79,4 +80,4 @@ After setting up the server, you can import the `ar-collection.json` file into P
   - Go to **File > Import**.
   - Select the `ar-collection.json` file and import it.
 
-This will provide you with all available API endpoints for testing the application.
+This will provide you with all available API endpoints for testing the application. -->

@@ -1,3 +1,4 @@
+import { deleteFile, exportToCSV, importFromCSV } from '../utilities/fileManager.js';
 import { queryDatabase } from '../utilities/queryDatabase.js';
 
 export async function listArtists(req, res) {
@@ -120,3 +121,62 @@ export async function deleteArtist(req, res) {
         res.status(500).json({ message: 'Internal server error', error });
     }
 }
+
+export async function exportArtists(req, res) {
+    try {
+        const artists = await queryDatabase('SELECT name, dob, gender, address, first_release_year, no_of_albums_released FROM artist');
+
+        const fields = [
+            { label: 'Name', value: 'name' },
+            { label: 'Date of Birth', value: 'dob' },
+            { label: 'Gender', value: 'gender' },
+            { label: 'Address', value: 'address' },
+            { label: 'First Release Year', value: 'first_release_year' },
+            { label: 'No of Albums Released', value: 'no_of_albums_released' }
+        ];
+
+        const formattedArtists = artists.map((item) => ({
+            name: item.name,
+            address: item.address || '-',
+            dob: item.dob ? new Date(item.dob).toISOString().split("T")[0] : '-',
+            gender: item.gender === 'm' ? 'Male' : item.gender === 'f' ? 'Female' : 'Other',
+            first_release_year: item.first_release_year || '-',
+            no_of_albums_released: item.no_of_albums_released || 0,
+        }));
+
+        const csv = await exportToCSV(formattedArtists, fields);
+
+        res.status(200).send({
+            records:csv
+        });
+    } catch (error) {
+        console.error('Error exporting artists:', error);
+        res.status(500).json({ message: 'Error exporting artists' });
+    }
+}
+
+export const importArtists = async (req, res) => {
+    const filePath = req.file.path;
+
+    try {
+        const artists = await importFromCSV(filePath);
+
+        for (const artist of artists) {
+            const name = artist['Name'];
+            const dob = artist['Date of Birth'];
+            const gender = artist['Gender'] === 'Male' ? 'm' : artist['Gender'] === 'Female' ? 'f' : 'o' ;
+            const address = artist['Address'];
+            const firstReleaseYear = artist['First Release Year'];
+            const noOfAlbumsReleased = artist['No of Albums Released'];
+
+            await queryDatabase('INSERT INTO artist (name, dob, gender, address, first_release_year, no_of_albums_released) VALUES (?, ?, ?, ?, ?, ?)', 
+                [name, dob, gender, address, firstReleaseYear, noOfAlbumsReleased]
+            );
+        }
+        deleteFile(filePath);
+        return res.status(200).json({ message: 'Artists imported successfully!' });
+    } catch (error) {
+        console.error('Error importing artists:', error);
+        return res.status(500).json({ message: 'Internal server error', error });
+    }
+};

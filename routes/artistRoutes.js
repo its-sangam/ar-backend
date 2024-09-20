@@ -1,7 +1,8 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { listArtists, store, update, getArtistDetails, deleteArtist } from '../controllers/artistController.js';
+import { listArtists, store, update, getArtistDetails, deleteArtist, exportArtists, importArtists } from '../controllers/artistController.js';
 import { authenticateToken } from '../middlewares/authMiddleware.js';
+import { uploadArtistCSV } from '../middlewares/multerMiddleware.js';
 
 
 const createArtistValidator = [
@@ -39,7 +40,6 @@ const handleValidationErrors = (req, res, next) => {
     next();
 };
 
-
 const artistRoutes = express.Router();
 
 artistRoutes.get('/list', authenticateToken,handleValidationErrors, listArtists);
@@ -47,5 +47,7 @@ artistRoutes.post('/create', createArtistValidator,authenticateToken, handleVali
 artistRoutes.put('/:id/update',editArtistValidator, authenticateToken,handleValidationErrors, update);
 artistRoutes.get('/:id',authenticateToken, handleValidationErrors, getArtistDetails);
 artistRoutes.delete('/:id', authenticateToken, deleteArtist);
+artistRoutes.get('/export/csv', authenticateToken, exportArtists);
+artistRoutes.post('/import/csv', authenticateToken, uploadArtistCSV, importArtists);
 
 export default artistRoutes;
