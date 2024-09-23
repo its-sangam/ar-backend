@@ -15,7 +15,6 @@ export async function exportToCSV(data, fields) {
 
         const json2csvParser = new Parser({ fields: csvFields });
         const csv = json2csvParser.parse(csvData);
-        console.log(csv);
         return csv;
     } catch (error) {
         console.error('Error generating CSV:', error);

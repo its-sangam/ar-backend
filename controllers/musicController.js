@@ -3,8 +3,13 @@ import { queryDatabase } from '../utilities/queryDatabase.js';
 export async function listMusic(req, res) {
     let { artist_id } = req.query;
     if(!artist_id){
-        const {id} = req.user;
-        artist_id = id;
+        const {id:userId} = req.user;
+        const userQuery = await queryDatabase(
+            'SELECT u.first_name, u.last_name, u.dob, a.id as artist_id FROM user u LEFT JOIN artist a ON a.name = CONCAT(u.first_name, " ", u.last_name) AND a.dob = u.dob WHERE u.id = ?',
+            [userId]
+        );
+        const userDetails = userQuery[0];
+        artist_id = userDetails.artist_id;
     }
     try {
         const result = await queryDatabase(
